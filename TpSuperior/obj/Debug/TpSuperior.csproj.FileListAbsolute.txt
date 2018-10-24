@@ -1,0 +1,10 @@
+C:\Users\Ronan\Desktop\sup\TpSuperior\TpSuperior\bin\Debug\TpSuperior.exe.config
+C:\Users\Ronan\Desktop\sup\TpSuperior\TpSuperior\bin\Debug\TpSuperior.exe
+C:\Users\Ronan\Desktop\sup\TpSuperior\TpSuperior\bin\Debug\TpSuperior.pdb
+C:\Users\Ronan\Desktop\sup\TpSuperior\TpSuperior\obj\Debug\TpSuperior.csprojAssemblyReference.cache
+C:\Users\Ronan\Desktop\sup\TpSuperior\TpSuperior\obj\Debug\TpSuperior.Form1.resources
+C:\Users\Ronan\Desktop\sup\TpSuperior\TpSuperior\obj\Debug\TpSuperior.Properties.Resources.resources
+C:\Users\Ronan\Desktop\sup\TpSuperior\TpSuperior\obj\Debug\TpSuperior.csproj.GenerateResource.cache
+C:\Users\Ronan\Desktop\sup\TpSuperior\TpSuperior\obj\Debug\TpSuperior.csproj.CoreCompileInputs.cache
+C:\Users\Ronan\Desktop\sup\TpSuperior\TpSuperior\obj\Debug\TpSuperior.exe
+C:\Users\Ronan\Desktop\sup\TpSuperior\TpSuperior\obj\Debug\TpSuperior.pdb
