@@ -8,3 +8,6 @@ C:\Users\Ronan\Desktop\sup\TpSuperior\TpSuperior\obj\Debug\TpSuperior.csproj.Gen
 C:\Users\Ronan\Desktop\sup\TpSuperior\TpSuperior\obj\Debug\TpSuperior.csproj.CoreCompileInputs.cache
 C:\Users\Ronan\Desktop\sup\TpSuperior\TpSuperior\obj\Debug\TpSuperior.exe
 C:\Users\Ronan\Desktop\sup\TpSuperior\TpSuperior\obj\Debug\TpSuperior.pdb
+C:\Users\Ronan\Desktop\sup\TpSuperior\TpSuperior\bin\Debug\MathNet.Numerics.dll
+C:\Users\Ronan\Desktop\sup\TpSuperior\TpSuperior\bin\Debug\MathNet.Numerics.xml
+C:\Users\Ronan\Desktop\sup\TpSuperior\TpSuperior\obj\Debug\TpSuperior.csproj.CopyComplete
