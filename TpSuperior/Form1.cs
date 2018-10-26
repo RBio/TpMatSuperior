@@ -20,14 +20,17 @@ namespace TpSuperior
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            cmbMetodo.Items.Add("Metodo de Jacobi");
+            cmbMetodo.Items.Add("Metodo de Gauss-Seidel");
+            cmbMetodo.SelectedItem = "Metodo de Jacobi";
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             dgvMatrix.Rows.Clear();
             dgvMatrix.Columns.Clear();
-            dgvMatrix.Refresh();
+            dgvMatrix
+                .Refresh();
             decimal n = txtMatrixN.Value;
             decimal m = txtMatrixM.Value;
             for (int j = 0; j < m; ++j)
@@ -39,19 +42,29 @@ namespace TpSuperior
             {
                 dgvMatrix.Rows.Add();
             }
+
         }
 
         private void matrix_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
-
         private void txtMatrixN_TextChanged(object sender, EventArgs e)
         {
 
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnContinuar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbMetodo_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
