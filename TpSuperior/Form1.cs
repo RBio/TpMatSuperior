@@ -26,9 +26,9 @@ namespace TpSuperior
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            cmbMetodo.Items.Add("Metodo de Jacobi");
-            cmbMetodo.Items.Add("Metodo de Gauss-Seidel");
-            cmbMetodo.SelectedItem = "Metodo de Jacobi";
+            cmbMetodo.Items.Add("Jacobi");
+            cmbMetodo.Items.Add("Gauss-Seidel");
+            cmbMetodo.SelectedItem = "Jacobi";
             cmbNorm.Items.Add("1");
             cmbNorm.Items.Add("2");
             cmbNorm.Items.Add("Infinito");
@@ -81,17 +81,20 @@ namespace TpSuperior
                     firstTry = false;
                    if (method == "Jacobi")
                     {
-                        lr = r;
                         T = jacobiTMatrix(m);
                         C = jacobiCMatrix(m);
-                        r = T * r + C;
                     }
                     else
                     {
-                        //T = GSTMatrix(m);
-                        //C = GSCMatrix(m);
+                        T = GSTMatrix(m);
+                        C = GSCMatrix(m);
                     }
-
+                    Console.WriteLine(r);
+                    lr = r;
+                    r = T * r + C;
+                    Console.WriteLine(r);
+                    Console.WriteLine(T);
+                    Console.WriteLine(C);
                 }
                 mostrarResultado(r);
             }
@@ -99,7 +102,12 @@ namespace TpSuperior
 
         private void cmbMetodo_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            if (cmbMetodo.SelectedItem == null)
+                return;
+            if (cmbMetodo.SelectedItem.ToString() == "Gauss-Seidel")
+                method = "Gauss-Seidel";
+            else
+                method = "Jacobi";
         }
 
         private void txtMetodo_Click(object sender, EventArgs e)
@@ -173,7 +181,7 @@ namespace TpSuperior
         }
         private Matrix<double> reciprocalMatrix(Matrix<double> m)
         {
-            return Matrix<double>.Build.Dense(dgvMatrix.RowCount, dgvMatrix.ColumnCount - 1, (i, j) => getInverseMatrixValue(i, j, m));
+            return Matrix<double>.Build.Dense(m.RowCount, m.ColumnCount, (i, j) => getInverseMatrixValue(i, j, m));
         }
         private double getInverseMatrixValue(int i, int j, Matrix<double> m)
         {
@@ -198,6 +206,14 @@ namespace TpSuperior
             else if (norm == "Infinito")
                 return r.InfinityNorm();
             return r.L1Norm();
+        }
+        private Matrix<double> GSTMatrix(Matrix<double> m)
+        {
+            return reciprocalMatrix(diagonalMatrix(m) - diagonalWithZeroes(m.LowerTriangle() * -1)) * diagonalWithZeroes(m.UpperTriangle() * -1);
+        }
+        private Matrix<double> GSCMatrix(Matrix<double> m)
+        {
+            return reciprocalMatrix(diagonalMatrix(m) - diagonalWithZeroes(m.LowerTriangle() * -1)) * getIC();
         }
         private void mostrarResultado(Matrix<double> r)
         {
