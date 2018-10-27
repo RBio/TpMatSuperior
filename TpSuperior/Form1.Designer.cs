@@ -31,13 +31,12 @@
             this.btnGenerateMatrix = new System.Windows.Forms.Button();
             this.dgvMatrix = new System.Windows.Forms.DataGridView();
             this.txtMatrixN = new System.Windows.Forms.NumericUpDown();
-            this.txtMatrixM = new System.Windows.Forms.NumericUpDown();
             this.btnContinuar = new System.Windows.Forms.Button();
             this.cmbMetodo = new System.Windows.Forms.ComboBox();
             this.txtMetodo = new System.Windows.Forms.Label();
+            this.txtError = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMatrix)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtMatrixN)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtMatrixM)).BeginInit();
             this.SuspendLayout();
             // 
             // btnGenerateMatrix
@@ -73,23 +72,10 @@
             this.txtMatrixN.Size = new System.Drawing.Size(112, 20);
             this.txtMatrixN.TabIndex = 36;
             // 
-            // txtMatrixM
-            // 
-            this.txtMatrixM.Location = new System.Drawing.Point(595, 53);
-            this.txtMatrixM.Maximum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            0});
-            this.txtMatrixM.Name = "txtMatrixM";
-            this.txtMatrixM.Size = new System.Drawing.Size(112, 20);
-            this.txtMatrixM.TabIndex = 37;
-            this.txtMatrixM.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
-            // 
             // btnContinuar
             // 
             this.btnContinuar.Location = new System.Drawing.Point(713, 375);
-            this.btnContinuar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnContinuar.Margin = new System.Windows.Forms.Padding(2);
             this.btnContinuar.Name = "btnContinuar";
             this.btnContinuar.Size = new System.Drawing.Size(74, 48);
             this.btnContinuar.TabIndex = 40;
@@ -101,7 +87,7 @@
             // 
             this.cmbMetodo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbMetodo.Location = new System.Drawing.Point(449, 23);
-            this.cmbMetodo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cmbMetodo.Margin = new System.Windows.Forms.Padding(2);
             this.cmbMetodo.Name = "cmbMetodo";
             this.cmbMetodo.Size = new System.Drawing.Size(128, 21);
             this.cmbMetodo.TabIndex = 43;
@@ -118,15 +104,22 @@
             this.txtMetodo.Text = "Seleccione el metodo";
             this.txtMetodo.Click += new System.EventHandler(this.txtMetodo_Click);
             // 
+            // txtError
+            // 
+            this.txtError.Location = new System.Drawing.Point(595, 50);
+            this.txtError.Name = "txtError";
+            this.txtError.Size = new System.Drawing.Size(112, 20);
+            this.txtError.TabIndex = 44;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.txtError);
             this.Controls.Add(this.txtMetodo);
             this.Controls.Add(this.cmbMetodo);
             this.Controls.Add(this.btnContinuar);
-            this.Controls.Add(this.txtMatrixM);
             this.Controls.Add(this.txtMatrixN);
             this.Controls.Add(this.dgvMatrix);
             this.Controls.Add(this.btnGenerateMatrix);
@@ -135,7 +128,6 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvMatrix)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtMatrixN)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtMatrixM)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -146,10 +138,10 @@
         private System.Windows.Forms.Button btnGenerateMatrix;
         private System.Windows.Forms.DataGridView dgvMatrix;
         private System.Windows.Forms.NumericUpDown txtMatrixN;
-        private System.Windows.Forms.NumericUpDown txtMatrixM;
         private System.Windows.Forms.Button btnContinuar;
         private System.Windows.Forms.ComboBox cmbMetodo;
         private System.Windows.Forms.Label txtMetodo;
+        private System.Windows.Forms.TextBox txtError;
     }
 }
 

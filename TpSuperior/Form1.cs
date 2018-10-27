@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MathNet.Numerics;
 using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace TpSuperior
 {
@@ -36,17 +37,12 @@ namespace TpSuperior
             dgvMatrix
                 .Refresh();
             decimal n = txtMatrixN.Value;
-            decimal m = txtMatrixM.Value;
-            for (int j = 0; j < m; ++j)
-            {
-                dgvMatrix.Columns.Add("X" + dgvMatrix.Columns.Count, "X" + dgvMatrix.Columns.Count);
-            }
-            dgvMatrix.Columns.Add("TI" ,"Terminos independientes");
             for (int i = 0; i < n; ++i)
             {
+                dgvMatrix.Columns.Add("X" + dgvMatrix.Columns.Count, "X" + dgvMatrix.Columns.Count);
                 dgvMatrix.Rows.Add();
             }
-
+            dgvMatrix.Columns.Add("TI" ,"Terminos independientes");
         }
 
         private void matrix_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -65,22 +61,30 @@ namespace TpSuperior
 
         private void btnContinuar_Click(object sender, EventArgs e)
         {
-            Matrix<double> T, r, C, m;
+            Matrix<double> T, r, lr, C, m;
+            double error = Convert.ToDouble(txtError.Text);
+            lr = Matrix<double>.Build.Dense(dgvMatrix.RowCount, 1);
+            r = getIC();
             if (matrixFullAndDiagonal())
             {
-               r = getIC();
-               m = buildMatrix();
-               if (method == "Jacobi")
+                m = buildMatrix();
+                while ((r - lr).L2Norm() > error)
                 {
-                    T = jacobiTMatrix(m);
-                    C = jacobiCMatrix(m);
+                   if (method == "Jacobi")
+                    {
+                        lr = r;
+                        T = jacobiTMatrix(m);
+                        C = jacobiCMatrix(m);
+                        r = T * r + C;
+                    }
+                    else
+                    {
+                        //T = GSTMatrix(m);
+                        //C = GSCMatrix(m);
+                    }
+
                 }
-                else
-                {
-                    //T = GSTMatrix(m);
-                    //C = GSCMatrix(m);
-                }
-                //solutionVector = T * r + C;
+                mostrarResultado(r);
             }
         }
 
@@ -122,15 +126,15 @@ namespace TpSuperior
         private bool rowMax(int i, int j)
         {
             double testValue, testMax;
-            for (int k = 0; k < dgvMatrix.ColumnCount; ++k)
+            testMax = Math.Abs(Convert.ToDouble(dgvMatrix.Rows[i].Cells[j].Value));
+            for (int k = 0; k < dgvMatrix.ColumnCount - 1; ++k)
             {
                 if (k == j)
                     continue;
                 testValue = Convert.ToDouble(dgvMatrix.Rows[i].Cells[k].Value);
-                testMax = Convert.ToDouble(dgvMatrix.Rows[i].Cells[j].Value);
                 if (matrixType == "diagonal")
                 {
-                    if (testValue >= testMax)
+                    if (Math.Abs(testValue) >= testMax)
                     {
                         MessageBox.Show("La matriz no es diagonal");
                         return false;
@@ -150,7 +154,7 @@ namespace TpSuperior
         }
         private Matrix<double> jacobiTMatrix(Matrix<double> m)
         {
-            return reciprocalMatrix(diagonalMatrix(m)) * (m.LowerTriangle() + m.UpperTriangle()); 
+            return reciprocalMatrix(diagonalMatrix(m)) * (diagonalWithZeroes(m.LowerTriangle() * -1) + diagonalWithZeroes(m.UpperTriangle() * -1)); 
         }
         private Matrix<double> diagonalMatrix(Matrix<double> m)
         {
@@ -160,15 +164,30 @@ namespace TpSuperior
         }
         private Matrix<double> reciprocalMatrix(Matrix<double> m)
         {
-            return Matrix<double>.Build.Dense(dgvMatrix.RowCount, dgvMatrix.ColumnCount - 1, (i, j) => 1/getMatrixValue(i, j, m));
+            return Matrix<double>.Build.Dense(dgvMatrix.RowCount, dgvMatrix.ColumnCount - 1, (i, j) => getInverseMatrixValue(i, j, m));
         }
-        private double getMatrixValue(int i, int j, Matrix<double> m)
+        private double getInverseMatrixValue(int i, int j, Matrix<double> m)
         {
-            return Convert.ToDouble(m.Row(i).At(j)); //Check this "At"
+            double cellValue = Convert.ToDouble(m.Row(i).At(j));
+            if (cellValue != 0)
+                return 1.0/Convert.ToDouble(m.Row(i).At(j));
+            return 0;
         }
         private Matrix<double> jacobiCMatrix(Matrix<double> m)
         {
             return reciprocalMatrix(diagonalMatrix(m)) * getIC();
+        }
+        private Matrix<double> diagonalWithZeroes(Matrix<double> m)
+        {
+            m.SetDiagonal(Vector.Build.Dense(m.RowCount));
+            return m;
+        }
+        private void mostrarResultado(Matrix<double> r)
+        {
+            string result = "";
+            for (int i = 0; i < r.RowCount; ++i)
+                result += r.Row(i).At(0);
+            MessageBox.Show("El resultado es " + result);
         }
     }
 }
