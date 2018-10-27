@@ -17,7 +17,8 @@ namespace TpSuperior
     {
         string method = "Jacobi";
         string matrixType = "diagonal";
-        Matrix<double> solutionVector;
+        string norm = "2";
+
         public Form1()
         {
             InitializeComponent();
@@ -28,19 +29,25 @@ namespace TpSuperior
             cmbMetodo.Items.Add("Metodo de Jacobi");
             cmbMetodo.Items.Add("Metodo de Gauss-Seidel");
             cmbMetodo.SelectedItem = "Metodo de Jacobi";
+            cmbNorm.Items.Add("1");
+            cmbNorm.Items.Add("2");
+            cmbNorm.Items.Add("Infinito");
+            cmbNorm.SelectedItem = "2";
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            dgvMatrix.Rows.Clear();
-            dgvMatrix.Columns.Clear();
-            dgvMatrix
-                .Refresh();
+            
+            clearDgvs();
             decimal n = txtMatrixN.Value;
+            dgvUnknowns.Columns.Add("I", "Incognitas");
+            dgvInitialVector.Columns.Add("VI", "Vector inicial");
             for (int i = 0; i < n; ++i)
             {
+                dgvUnknowns.Rows.Add("X" + dgvMatrix.Columns.Count, "X" + dgvMatrix.Columns.Count);
                 dgvMatrix.Columns.Add("X" + dgvMatrix.Columns.Count, "X" + dgvMatrix.Columns.Count);
                 dgvMatrix.Rows.Add();
+                dgvInitialVector.Rows.Add("0");
             }
             dgvMatrix.Columns.Add("TI" ,"Terminos independientes");
         }
@@ -63,13 +70,15 @@ namespace TpSuperior
         {
             Matrix<double> T, r, lr, C, m;
             double error = Convert.ToDouble(txtError.Text);
+            bool firstTry = true;
             lr = Matrix<double>.Build.Dense(dgvMatrix.RowCount, 1);
-            r = getIC();
+            r = getInitialVector();
             if (matrixFullAndDiagonal())
             {
                 m = buildMatrix();
-                while ((r - lr).L2Norm() > error)
+                while (selectedNorm(r - lr) > error || firstTry)
                 {
+                    firstTry = false;
                    if (method == "Jacobi")
                     {
                         lr = r;
@@ -99,11 +108,11 @@ namespace TpSuperior
         }
         private Matrix<double> buildMatrix()
         {
-            return Matrix<double>.Build.Dense(dgvMatrix.RowCount, dgvMatrix.ColumnCount - 1, (i, j) => getDvgMatrixValue(i,j));
+            return Matrix<double>.Build.Dense(dgvMatrix.RowCount, dgvMatrix.ColumnCount - 1, (i, j) => getDgvValue(i,j, dgvMatrix));
         }
-        private double getDvgMatrixValue(int i, int j)
+        private double getDgvValue(int i, int j, DataGridView matrix)
         {
-            return Convert.ToDouble(dgvMatrix.Rows[i].Cells[j].Value);
+            return Convert.ToDouble(matrix.Rows[i].Cells[j].Value);
         }
         private bool matrixFullAndDiagonal()
         {
@@ -121,7 +130,7 @@ namespace TpSuperior
         }
         private Matrix<double> getIC()
         {
-            return Matrix<double>.Build.Dense(dgvMatrix.RowCount, 1, (i, j) => getDvgMatrixValue(i, dgvMatrix.ColumnCount - 1));
+            return Matrix<double>.Build.Dense(dgvMatrix.RowCount, 1, (i, j) => getDgvValue(i, dgvMatrix.ColumnCount - 1, dgvMatrix));
         }
         private bool rowMax(int i, int j)
         {
@@ -136,7 +145,7 @@ namespace TpSuperior
                 {
                     if (Math.Abs(testValue) >= testMax)
                     {
-                        MessageBox.Show("La matriz no es diagonal");
+                        MessageBox.Show("La matriz no es diagonal dominante");
                         return false;
                     }
                 }
@@ -144,7 +153,7 @@ namespace TpSuperior
                 {
                     if (testValue > testMax)
                     {
-                        MessageBox.Show("La matriz no es estrictamente diagonal");
+                        MessageBox.Show("La matriz no es estrictamente diagonal dominante");
                         return false;
                     }
                 }
@@ -182,12 +191,59 @@ namespace TpSuperior
             m.SetDiagonal(Vector.Build.Dense(m.RowCount));
             return m;
         }
+        private double selectedNorm(Matrix<double> r)
+        {
+            if (norm == "2")
+                return r.L2Norm();
+            else if (norm == "Infinito")
+                return r.InfinityNorm();
+            return r.L1Norm();
+        }
         private void mostrarResultado(Matrix<double> r)
         {
-            string result = "";
+            string result = "(";
             for (int i = 0; i < r.RowCount; ++i)
-                result += r.Row(i).At(0);
-            MessageBox.Show("El resultado es " + result);
+                result += r.Row(i).At(0).ToString() + ", ";
+            MessageBox.Show("El resultado es " + result.Substring(0, result.Length - 2) + ")");
+        }
+        private void clearDgvs()
+        {
+            dgvMatrix.Rows.Clear();
+            dgvMatrix.Columns.Clear();
+            dgvMatrix.Refresh();
+            dgvUnknowns.Rows.Clear();
+            dgvUnknowns.Columns.Clear();
+            dgvUnknowns.Refresh();
+            dgvInitialVector.Rows.Clear();
+            dgvInitialVector.Columns.Clear();
+            dgvInitialVector.Refresh();
+        }
+        private Matrix<double> getInitialVector()
+        {
+           return Matrix<double>.Build.Dense(dgvMatrix.RowCount, 1, (i, j) => getDgvValue(i, 0, dgvInitialVector));
+        }
+
+        private void txtMatrixN_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void btnRename_Click(object sender, EventArgs e)
+        {
+            for(int i = 0; i < dgvMatrix.ColumnCount - 1; ++i)
+            {
+                dgvMatrix.Columns[i].HeaderText = dgvUnknowns.Rows[i].Cells[0].Value.ToString();
+            }
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
