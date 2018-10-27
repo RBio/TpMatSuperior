@@ -89,12 +89,12 @@ namespace TpSuperior
                         T = GSTMatrix(m);
                         C = GSCMatrix(m);
                     }
-                    Console.WriteLine(r);
+                    //Console.WriteLine(r);
                     lr = r;
                     r = T * r + C;
-                    Console.WriteLine(r);
-                    Console.WriteLine(T);
-                    Console.WriteLine(C);
+                    //Console.WriteLine(r);
+                    //Console.WriteLine(T);
+                    //Console.WriteLine(C);
                 }
                 mostrarResultado(r);
             }
@@ -171,7 +171,7 @@ namespace TpSuperior
         }
         private Matrix<double> jacobiTMatrix(Matrix<double> m)
         {
-            return reciprocalMatrix(diagonalMatrix(m)) * (diagonalWithZeroes(m.LowerTriangle() * -1) + diagonalWithZeroes(m.UpperTriangle() * -1)); 
+            return invertedMatrix(diagonalMatrix(m)) * (diagonalWithZeroes(m.LowerTriangle() * -1) + diagonalWithZeroes(m.UpperTriangle() * -1)); 
         }
         private Matrix<double> diagonalMatrix(Matrix<double> m)
         {
@@ -179,9 +179,10 @@ namespace TpSuperior
             a.SetDiagonal(m.Diagonal());
             return a;
         }
-        private Matrix<double> reciprocalMatrix(Matrix<double> m)
+        private Matrix<double> invertedMatrix(Matrix<double> m)
         {
-            return Matrix<double>.Build.Dense(m.RowCount, m.ColumnCount, (i, j) => getInverseMatrixValue(i, j, m));
+            Matrix<double> aux = m;
+            return aux.Inverse();
         }
         private double getInverseMatrixValue(int i, int j, Matrix<double> m)
         {
@@ -192,7 +193,7 @@ namespace TpSuperior
         }
         private Matrix<double> jacobiCMatrix(Matrix<double> m)
         {
-            return reciprocalMatrix(diagonalMatrix(m)) * getIC();
+            return invertedMatrix(diagonalMatrix(m)) * getIC();
         }
         private Matrix<double> diagonalWithZeroes(Matrix<double> m)
         {
@@ -209,11 +210,11 @@ namespace TpSuperior
         }
         private Matrix<double> GSTMatrix(Matrix<double> m)
         {
-            return reciprocalMatrix(diagonalMatrix(m) - diagonalWithZeroes(m.LowerTriangle() * -1)) * diagonalWithZeroes(m.UpperTriangle() * -1);
+            return invertedMatrix(diagonalMatrix(m) - diagonalWithZeroes(m.LowerTriangle() * -1)) * diagonalWithZeroes(m.UpperTriangle() * -1);
         }
         private Matrix<double> GSCMatrix(Matrix<double> m)
         {
-            return reciprocalMatrix(diagonalMatrix(m) - diagonalWithZeroes(m.LowerTriangle() * -1)) * getIC();
+            return invertedMatrix(diagonalMatrix(m) - diagonalWithZeroes(m.LowerTriangle() * -1)) * getIC();
         }
         private void mostrarResultado(Matrix<double> r)
         {
