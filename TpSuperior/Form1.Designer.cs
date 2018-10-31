@@ -42,10 +42,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cmbNorm = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtDecimals = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMatrix)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtMatrixN)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvUnknowns)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInitialVector)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDecimals)).BeginInit();
             this.SuspendLayout();
             // 
             // btnGenerateMatrix
@@ -96,7 +99,7 @@
             // cmbMetodo
             // 
             this.cmbMetodo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbMetodo.Location = new System.Drawing.Point(133, 20);
+            this.cmbMetodo.Location = new System.Drawing.Point(58, 20);
             this.cmbMetodo.Margin = new System.Windows.Forms.Padding(2);
             this.cmbMetodo.Name = "cmbMetodo";
             this.cmbMetodo.Size = new System.Drawing.Size(128, 21);
@@ -109,9 +112,9 @@
             this.txtMetodo.Location = new System.Drawing.Point(11, 23);
             this.txtMetodo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.txtMetodo.Name = "txtMetodo";
-            this.txtMetodo.Size = new System.Drawing.Size(109, 13);
+            this.txtMetodo.Size = new System.Drawing.Size(43, 13);
             this.txtMetodo.TabIndex = 42;
-            this.txtMetodo.Text = "Seleccione el metodo";
+            this.txtMetodo.Text = "Metodo";
             this.txtMetodo.Click += new System.EventHandler(this.txtMetodo_Click);
             // 
             // txtError
@@ -159,29 +162,30 @@
             this.label1.Location = new System.Drawing.Point(452, 25);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(137, 13);
+            this.label1.Size = new System.Drawing.Size(123, 13);
             this.label1.TabIndex = 48;
-            this.label1.Text = "Seleccione las dimensiones";
+            this.label1.Text = "Dimensiones de la matriz";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(452, 53);
+            this.label2.Location = new System.Drawing.Point(546, 53);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(95, 13);
+            this.label2.Size = new System.Drawing.Size(29, 13);
             this.label2.TabIndex = 49;
-            this.label2.Text = "Seleccione el error";
+            this.label2.Text = "Error";
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // cmbNorm
             // 
             this.cmbNorm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbNorm.Location = new System.Drawing.Point(133, 49);
+            this.cmbNorm.Location = new System.Drawing.Point(58, 50);
             this.cmbNorm.Margin = new System.Windows.Forms.Padding(2);
             this.cmbNorm.Name = "cmbNorm";
             this.cmbNorm.Size = new System.Drawing.Size(128, 21);
             this.cmbNorm.TabIndex = 50;
+            this.cmbNorm.SelectedIndexChanged += new System.EventHandler(this.cmbNorm_SelectedIndexChanged);
             // 
             // label3
             // 
@@ -189,15 +193,41 @@
             this.label3.Location = new System.Drawing.Point(11, 53);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(103, 13);
+            this.label3.Size = new System.Drawing.Size(38, 13);
             this.label3.TabIndex = 51;
-            this.label3.Text = "Seleccione la norma";
+            this.label3.Text = "Norma";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(222, 25);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(114, 13);
+            this.label4.TabIndex = 52;
+            this.label4.Text = "Cantidad de decimales";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
+            // 
+            // txtDecimals
+            // 
+            this.txtDecimals.Location = new System.Drawing.Point(341, 25);
+            this.txtDecimals.Maximum = new decimal(new int[] {
+            100000000,
+            0,
+            0,
+            0});
+            this.txtDecimals.Name = "txtDecimals";
+            this.txtDecimals.Size = new System.Drawing.Size(68, 20);
+            this.txtDecimals.TabIndex = 53;
+            this.txtDecimals.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged_1);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(833, 402);
+            this.Controls.Add(this.txtDecimals);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.cmbNorm);
             this.Controls.Add(this.label2);
@@ -219,6 +249,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtMatrixN)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvUnknowns)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInitialVector)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDecimals)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -240,6 +271,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cmbNorm;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown txtDecimals;
     }
 }
 

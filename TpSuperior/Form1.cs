@@ -69,12 +69,19 @@ namespace TpSuperior
         private void btnContinuar_Click(object sender, EventArgs e)
         {
             Matrix<double> T, r, lr, C, m;
-            double error = Convert.ToDouble(txtError.Text);
+            double error;
             bool firstTry = true;
-            lr = Matrix<double>.Build.Dense(dgvMatrix.RowCount, 1);
-            r = getInitialVector();
-            if (matrixFullAndDiagonal())
+            txtError.Text = txtError.Text.Replace(".", ",");
+            if (!validStringNumber(txtError.Text))
             {
+                MessageBox.Show("Ingrese un error valido");
+                return;
+            }
+            if (matrixFullAndDiagonal() && validInitialVector())
+            {
+                r = getInitialVector();
+                lr = Matrix<double>.Build.Dense(dgvMatrix.RowCount, 1);
+                error = Convert.ToDouble(txtError.Text);
                 m = buildMatrix();
                 while (selectedNorm(r - lr) > error || firstTry)
                 {
@@ -89,12 +96,8 @@ namespace TpSuperior
                         T = GSTMatrix(m);
                         C = GSCMatrix(m);
                     }
-                    //Console.WriteLine(r);
                     lr = r;
                     r = T * r + C;
-                    //Console.WriteLine(r);
-                    //Console.WriteLine(T);
-                    //Console.WriteLine(C);
                 }
                 mostrarResultado(r);
             }
@@ -124,6 +127,11 @@ namespace TpSuperior
         }
         private bool matrixFullAndDiagonal()
         {
+            if (dgvMatrix.RowCount == 0)
+            {
+                MessageBox.Show("Ingrese un sistema de ecuaciones");
+                return false;
+            }
             for (int i = 0; i < dgvMatrix.RowCount; ++i)
                 for (int j = 0; j < dgvMatrix.ColumnCount; ++j)
                     if (dgvMatrix.Rows[i].Cells[j].Value == null)
@@ -143,11 +151,25 @@ namespace TpSuperior
         private bool rowMax(int i, int j)
         {
             double testValue, testMax;
+
+            if (!validStringNumber(dgvMatrix.Rows[i].Cells[j].Value.ToString()))
+            {
+                MessageBox.Show("Complete la matriz con numeros validos");
+                return false;
+            }
+
             testMax = Math.Abs(Convert.ToDouble(dgvMatrix.Rows[i].Cells[j].Value));
             for (int k = 0; k < dgvMatrix.ColumnCount - 1; ++k)
             {
                 if (k == j)
                     continue;
+
+                if (!validStringNumber(dgvMatrix.Rows[i].Cells[k].Value.ToString()))
+                {
+                    MessageBox.Show("Complete la matriz con numeros validos");
+                    return false;
+                }
+
                 testValue = Convert.ToDouble(dgvMatrix.Rows[i].Cells[k].Value);
                 if (matrixType == "diagonal")
                 {
@@ -172,6 +194,11 @@ namespace TpSuperior
         private Matrix<double> jacobiTMatrix(Matrix<double> m)
         {
             return invertedMatrix(diagonalMatrix(m)) * (diagonalWithZeroes(m.LowerTriangle() * -1) + diagonalWithZeroes(m.UpperTriangle() * -1)); 
+        }
+        private bool validStringNumber(string number)
+        {
+            double n = 0;
+            return double.TryParse(number, out n);
         }
         private Matrix<double> diagonalMatrix(Matrix<double> m)
         {
@@ -220,7 +247,7 @@ namespace TpSuperior
         {
             string result = "(";
             for (int i = 0; i < r.RowCount; ++i)
-                result += r.Row(i).At(0).ToString() + ", ";
+                result += Math.Round(r.Row(i).At(0), Convert.ToInt32(txtDecimals.Value), MidpointRounding.AwayFromZero).ToString() + "; ";
             MessageBox.Show("El resultado es " + result.Substring(0, result.Length - 2) + ")");
         }
         private void clearDgvs()
@@ -259,6 +286,41 @@ namespace TpSuperior
         }
 
         private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbNorm_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbNorm.SelectedItem == null)
+                return;
+            if (cmbNorm.SelectedItem.ToString() == "1")
+                norm = "1";
+            else if (cmbNorm.SelectedItem.ToString() == "2")
+                norm = "2";
+            else
+                norm = "Infinito";
+        }
+
+        private bool validInitialVector()
+        {
+            for (int i = 0; i < dgvInitialVector.RowCount; ++i)
+            {
+                if (!validStringNumber(dgvInitialVector.Rows[i].Cells[0].Value.ToString()))
+                {
+                    MessageBox.Show("Ingrese un vector inicial valido");
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void numericUpDown1_ValueChanged_1(object sender, EventArgs e)
         {
 
         }
