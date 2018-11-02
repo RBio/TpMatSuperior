@@ -33,6 +33,9 @@ namespace TpSuperior
             cmbNorm.Items.Add("2");
             cmbNorm.Items.Add("Infinito");
             cmbNorm.SelectedItem = "2";
+            cmbDiagonal.Items.Add("Diagonalmente dominante");
+            cmbDiagonal.Items.Add("Estrictamente diagonalmente dominante");
+            cmbDiagonal.SelectedItem = "Diagonalmente dominante";
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -71,7 +74,8 @@ namespace TpSuperior
             Matrix<double> T, r, lr, C, m;
             double error;
             bool firstTry = true;
-            txtError.Text = txtError.Text.Replace(".", ",");
+            txtError.Text.Replace(".", ",");
+            normalizeMatrixValues();
             if (!validStringNumber(txtError.Text))
             {
                 MessageBox.Show("Ingrese un error valido");
@@ -82,6 +86,13 @@ namespace TpSuperior
                 r = getInitialVector();
                 lr = Matrix<double>.Build.Dense(dgvMatrix.RowCount, 1);
                 error = Convert.ToDouble(txtError.Text);
+
+                if (error <= 0)
+                {
+                    MessageBox.Show("Ingrese un error mayor a 0");
+                    return;
+                }
+
                 m = buildMatrix();
                 while (selectedNorm(r - lr) > error || firstTry)
                 {
@@ -127,20 +138,23 @@ namespace TpSuperior
         }
         private bool matrixFullAndDiagonal()
         {
-            if (dgvMatrix.RowCount == 0)
+            if (dgvMatrix.RowCount < 2)
             {
                 MessageBox.Show("Ingrese un sistema de ecuaciones");
                 return false;
             }
             for (int i = 0; i < dgvMatrix.RowCount; ++i)
                 for (int j = 0; j < dgvMatrix.ColumnCount; ++j)
+                {
                     if (dgvMatrix.Rows[i].Cells[j].Value == null)
                     {
                         MessageBox.Show("Complete la matriz para continuar");
                         return false;
                     }
-                    else if (i == j && !rowMax(i, j))
+                    dgvMatrix.Rows[i].Cells[j].Value = dgvMatrix.Rows[i].Cells[j].Value.ToString().Replace(".", ",");
+                    if (i == j && !rowMax(i, j))
                         return false;
+                }
 
             return true;
         }
@@ -173,7 +187,7 @@ namespace TpSuperior
                 testValue = Convert.ToDouble(dgvMatrix.Rows[i].Cells[k].Value);
                 if (matrixType == "diagonal")
                 {
-                    if (Math.Abs(testValue) >= testMax)
+                    if (Math.Abs(testValue) > testMax)
                     {
                         MessageBox.Show("La matriz no es diagonal dominante");
                         return false;
@@ -181,7 +195,7 @@ namespace TpSuperior
                 }
                 else
                 {
-                    if (testValue > testMax)
+                    if (Math.Abs(testValue) >= testMax)
                     {
                         MessageBox.Show("La matriz no es estrictamente diagonal dominante");
                         return false;
@@ -205,6 +219,12 @@ namespace TpSuperior
             Matrix<double> a = Matrix<double>.Build.Dense(m.RowCount, m.ColumnCount);
             a.SetDiagonal(m.Diagonal());
             return a;
+        }
+        private void normalizeMatrixValues()
+        {
+            for (int i = 0; i < dgvMatrix.RowCount; ++i)
+                for (int j = 0; j < dgvMatrix.ColumnCount; ++j)
+                    dgvMatrix.Rows[i].Cells[j].Value = dgvMatrix.Rows[i].Cells[j].Value.ToString().Replace(".", ",");
         }
         private Matrix<double> invertedMatrix(Matrix<double> m)
         {
@@ -323,6 +343,16 @@ namespace TpSuperior
         private void numericUpDown1_ValueChanged_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void cmbDiagonal_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbDiagonal.SelectedItem == null)
+                return;
+            if (cmbDiagonal.SelectedItem.ToString() == "Diagonalmente dominante")
+                matrixType = "diagonal";
+            else
+                matrixType = "estrictamente diagonal";
         }
     }
 }

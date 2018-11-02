@@ -44,11 +44,16 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.txtDecimals = new System.Windows.Forms.NumericUpDown();
+            this.cmbDiagonal = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMatrix)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtMatrixN)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvUnknowns)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInitialVector)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDecimals)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnGenerateMatrix
@@ -68,7 +73,7 @@
             this.dgvMatrix.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMatrix.Location = new System.Drawing.Point(13, 92);
             this.dgvMatrix.Name = "dgvMatrix";
-            this.dgvMatrix.Size = new System.Drawing.Size(576, 231);
+            this.dgvMatrix.Size = new System.Drawing.Size(576, 203);
             this.dgvMatrix.TabIndex = 3;
             this.dgvMatrix.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.matrix_CellContentClick);
             // 
@@ -87,10 +92,10 @@
             // 
             // btnContinuar
             // 
-            this.btnContinuar.Location = new System.Drawing.Point(716, 342);
+            this.btnContinuar.Location = new System.Drawing.Point(711, 329);
             this.btnContinuar.Margin = new System.Windows.Forms.Padding(2);
             this.btnContinuar.Name = "btnContinuar";
-            this.btnContinuar.Size = new System.Drawing.Size(108, 48);
+            this.btnContinuar.Size = new System.Drawing.Size(110, 90);
             this.btnContinuar.TabIndex = 40;
             this.btnContinuar.Text = "Continuar";
             this.btnContinuar.UseVisualStyleBackColor = true;
@@ -147,10 +152,10 @@
             // 
             // btnRename
             // 
-            this.btnRename.Location = new System.Drawing.Point(596, 342);
+            this.btnRename.Location = new System.Drawing.Point(596, 329);
             this.btnRename.Margin = new System.Windows.Forms.Padding(2);
             this.btnRename.Name = "btnRename";
-            this.btnRename.Size = new System.Drawing.Size(111, 48);
+            this.btnRename.Size = new System.Drawing.Size(111, 90);
             this.btnRename.TabIndex = 47;
             this.btnRename.Text = "Renombrar incognitas";
             this.btnRename.UseVisualStyleBackColor = true;
@@ -169,12 +174,12 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(546, 53);
+            this.label2.Location = new System.Drawing.Point(507, 53);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(29, 13);
+            this.label2.Size = new System.Drawing.Size(68, 13);
             this.label2.TabIndex = 49;
-            this.label2.Text = "Error";
+            this.label2.Text = "Cota de error";
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // cmbNorm
@@ -221,11 +226,54 @@
             this.txtDecimals.TabIndex = 53;
             this.txtDecimals.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged_1);
             // 
+            // cmbDiagonal
+            // 
+            this.cmbDiagonal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbDiagonal.Location = new System.Drawing.Point(286, 53);
+            this.cmbDiagonal.Margin = new System.Windows.Forms.Padding(2);
+            this.cmbDiagonal.Name = "cmbDiagonal";
+            this.cmbDiagonal.Size = new System.Drawing.Size(123, 21);
+            this.cmbDiagonal.TabIndex = 54;
+            this.cmbDiagonal.SelectedIndexChanged += new System.EventHandler(this.cmbDiagonal_SelectedIndexChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(222, 58);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(60, 13);
+            this.label5.TabIndex = 55;
+            this.label5.Text = "Restriccion";
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(14, 329);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(575, 90);
+            this.dataGridView1.TabIndex = 56;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(10, 310);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(74, 13);
+            this.label6.TabIndex = 57;
+            this.label6.Text = "Procedimiento";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(833, 402);
+            this.ClientSize = new System.Drawing.Size(833, 434);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.cmbDiagonal);
             this.Controls.Add(this.txtDecimals);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -250,6 +298,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvUnknowns)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInitialVector)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDecimals)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -273,6 +322,10 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown txtDecimals;
+        private System.Windows.Forms.ComboBox cmbDiagonal;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Label label6;
     }
 }
 
