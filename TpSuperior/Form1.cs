@@ -83,6 +83,7 @@ namespace TpSuperior
             }
             if (matrixFullAndDiagonal() && validInitialVector())
             {
+                initializeProcedureMatrix();
                 r = getInitialVector();
                 lr = Matrix<double>.Build.Dense(dgvMatrix.RowCount, 1);
                 error = Convert.ToDouble(txtError.Text);
@@ -96,7 +97,7 @@ namespace TpSuperior
                 m = buildMatrix();
                 while (selectedNorm(r - lr) > error || firstTry)
                 {
-                    firstTry = false;
+                   firstTry = false;
                    if (method == "Jacobi")
                     {
                         T = jacobiTMatrix(m);
@@ -109,6 +110,7 @@ namespace TpSuperior
                     }
                     lr = r;
                     r = T * r + C;
+                    printStep(r, selectedNorm(r - lr));
                 }
                 mostrarResultado(r);
             }
@@ -353,6 +355,25 @@ namespace TpSuperior
                 matrixType = "diagonal";
             else
                 matrixType = "estrictamente diagonal";
+        }
+        private void initializeProcedureMatrix()
+        {
+            dgvProcedure.Rows.Clear();
+            dgvProcedure.Columns.Clear();
+
+            for (int i = 0; i < dgvMatrix.ColumnCount - 1; ++i)
+                dgvProcedure.Columns.Add(dgvMatrix.Columns[i].HeaderText, dgvMatrix.Columns[i].HeaderText);
+
+            dgvProcedure.Columns.Add("CE", "Cota de error");
+        }
+        private void printStep(Matrix<double> r, double error)
+        {
+            dgvProcedure.Rows.Add();
+
+            for (int i = 0; i < dgvProcedure.ColumnCount - 1; ++i)
+                dgvProcedure.Rows[dgvProcedure.RowCount - 1].Cells[i].Value = Math.Round(r.Row(i).At(0), Convert.ToInt32(txtDecimals.Value));
+
+            dgvProcedure.Rows[dgvProcedure.RowCount - 1].Cells[dgvProcedure.ColumnCount - 1].Value = error;
         }
     }
 }

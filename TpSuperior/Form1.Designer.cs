@@ -46,14 +46,14 @@
             this.txtDecimals = new System.Windows.Forms.NumericUpDown();
             this.cmbDiagonal = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dgvProcedure = new System.Windows.Forms.DataGridView();
             this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMatrix)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtMatrixN)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvUnknowns)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInitialVector)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDecimals)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvProcedure)).BeginInit();
             this.SuspendLayout();
             // 
             // btnGenerateMatrix
@@ -246,15 +246,15 @@
             this.label5.TabIndex = 55;
             this.label5.Text = "Restriccion";
             // 
-            // dataGridView1
+            // dgvProcedure
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(14, 329);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(575, 90);
-            this.dataGridView1.TabIndex = 56;
+            this.dgvProcedure.AllowUserToAddRows = false;
+            this.dgvProcedure.AllowUserToDeleteRows = false;
+            this.dgvProcedure.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvProcedure.Location = new System.Drawing.Point(14, 329);
+            this.dgvProcedure.Name = "dgvProcedure";
+            this.dgvProcedure.Size = new System.Drawing.Size(575, 90);
+            this.dgvProcedure.TabIndex = 56;
             // 
             // label6
             // 
@@ -271,7 +271,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(833, 434);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.dgvProcedure);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.cmbDiagonal);
             this.Controls.Add(this.txtDecimals);
@@ -298,7 +298,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvUnknowns)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInitialVector)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDecimals)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvProcedure)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -324,7 +324,7 @@
         private System.Windows.Forms.NumericUpDown txtDecimals;
         private System.Windows.Forms.ComboBox cmbDiagonal;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dgvProcedure;
         private System.Windows.Forms.Label label6;
     }
 }
