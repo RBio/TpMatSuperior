@@ -84,6 +84,8 @@ namespace TpSuperior
             if (matrixFullAndDiagonal() && validInitialVector())
             {
                 initializeProcedureMatrix();
+
+
                 r = getInitialVector();
                 lr = Matrix<double>.Build.Dense(dgvMatrix.RowCount, 1);
                 error = Convert.ToDouble(txtError.Text);
@@ -226,7 +228,8 @@ namespace TpSuperior
         {
             for (int i = 0; i < dgvMatrix.RowCount; ++i)
                 for (int j = 0; j < dgvMatrix.ColumnCount; ++j)
-                    dgvMatrix.Rows[i].Cells[j].Value = dgvMatrix.Rows[i].Cells[j].Value.ToString().Replace(".", ",");
+                    if (dgvMatrix.Rows[i].Cells[j].Value != null)
+                        dgvMatrix.Rows[i].Cells[j].Value = dgvMatrix.Rows[i].Cells[j].Value.ToString().Replace(".", ",");
         }
         private Matrix<double> invertedMatrix(Matrix<double> m)
         {
@@ -267,10 +270,14 @@ namespace TpSuperior
         }
         private void mostrarResultado(Matrix<double> r)
         {
-            string result = "(";
+            string resultVariables = "(";
+            string resultNumbers = "(";
             for (int i = 0; i < r.RowCount; ++i)
-                result += Math.Round(r.Row(i).At(0), Convert.ToInt32(txtDecimals.Value), MidpointRounding.AwayFromZero).ToString() + "; ";
-            MessageBox.Show("El resultado es " + result.Substring(0, result.Length - 2) + ")");
+            {
+                resultVariables += dgvMatrix.Columns[i].HeaderText + "; ";
+                resultNumbers += Math.Round(r.Row(i).At(0), Convert.ToInt32(txtDecimals.Value), MidpointRounding.AwayFromZero).ToString() + "; ";
+            }
+            MessageBox.Show("El resultado es " + resultVariables.Substring(0, resultVariables.Length - 2) + ") = " + resultNumbers.Substring(0, resultNumbers.Length - 2) + ")");
         }
         private void clearDgvs()
         {
@@ -289,6 +296,15 @@ namespace TpSuperior
            return Matrix<double>.Build.Dense(dgvMatrix.RowCount, 1, (i, j) => getDgvValue(i, 0, dgvInitialVector));
         }
 
+        private bool invalidInitialVector()
+        {
+            for (int i = 0; i < dgvInitialVector.RowCount; ++i)
+                if (dgvInitialVector.Rows[i].Cells[0].Value == null)
+                    return true;
+
+            return false;
+        }
+
         private void txtMatrixN_ValueChanged(object sender, EventArgs e)
         {
 
@@ -303,6 +319,11 @@ namespace TpSuperior
         {
             for(int i = 0; i < dgvMatrix.ColumnCount - 1; ++i)
             {
+                if (dgvUnknowns.Rows[i].Cells[0].Value == null)
+                {
+                    MessageBox.Show("Ingrese nombres de variables validos");
+                    return;
+                }
                 dgvMatrix.Columns[i].HeaderText = dgvUnknowns.Rows[i].Cells[0].Value.ToString();
             }
         }
@@ -328,7 +349,7 @@ namespace TpSuperior
         {
             for (int i = 0; i < dgvInitialVector.RowCount; ++i)
             {
-                if (!validStringNumber(dgvInitialVector.Rows[i].Cells[0].Value.ToString()))
+                if (dgvInitialVector.Rows[i].Cells[0].Value == null || !validStringNumber(dgvInitialVector.Rows[i].Cells[0].Value.ToString()))
                 {
                     MessageBox.Show("Ingrese un vector inicial valido");
                     return false;

@@ -221,9 +221,19 @@
             0,
             0,
             0});
+            this.txtDecimals.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             this.txtDecimals.Name = "txtDecimals";
             this.txtDecimals.Size = new System.Drawing.Size(68, 20);
             this.txtDecimals.TabIndex = 53;
+            this.txtDecimals.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             this.txtDecimals.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged_1);
             // 
             // cmbDiagonal
