@@ -76,11 +76,10 @@ namespace TpSuperior
             bool firstTry = true;
             txtError.Text.Replace(".", ",");
             normalizeMatrixValues();
-            if (!validStringNumber(txtError.Text))
-            {
-                MessageBox.Show("Ingrese un error valido");
+
+            if (!validError())
                 return;
-            }
+
             if (matrixFullAndDiagonal() && validInitialVector())
             {
                 initializeProcedureMatrix();
@@ -193,7 +192,7 @@ namespace TpSuperior
                 {
                     if (Math.Abs(testValue) > testMax)
                     {
-                        MessageBox.Show("La matriz no es diagonal dominante");
+                        MessageBox.Show("La matriz no es diagonal dominante. El valor de la fila " + i + " columna " + k + " es mayor que el de la diagonal.");
                         return false;
                     }
                 }
@@ -201,7 +200,7 @@ namespace TpSuperior
                 {
                     if (Math.Abs(testValue) >= testMax)
                     {
-                        MessageBox.Show("La matriz no es estrictamente diagonal dominante");
+                        MessageBox.Show("La matriz no es estrictamente diagonal dominante. El valor de la fila " + i + " columna " + k + " es mayor o igual que el de la diagonal.");
                         return false;
                     }
                 }
@@ -223,6 +222,20 @@ namespace TpSuperior
             Matrix<double> a = Matrix<double>.Build.Dense(m.RowCount, m.ColumnCount);
             a.SetDiagonal(m.Diagonal());
             return a;
+        }
+        private bool validError()
+        {
+            if (!validStringNumber(txtError.Text))
+            {
+                MessageBox.Show("Ingrese un error valido");
+                return false;
+            }
+            if (Convert.ToDouble(txtError.Text) < 0)
+            {
+                MessageBox.Show("Ingrese un error mayor a 0.");
+                return false;
+            }
+            return true;
         }
         private void normalizeMatrixValues()
         {

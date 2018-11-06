@@ -217,7 +217,7 @@
             // 
             this.txtDecimals.Location = new System.Drawing.Point(341, 25);
             this.txtDecimals.Maximum = new decimal(new int[] {
-            100000000,
+            14,
             0,
             0,
             0});
