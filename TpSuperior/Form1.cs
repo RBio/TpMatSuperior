@@ -74,7 +74,7 @@ namespace TpSuperior
             Matrix<double> T, r, lr, C, m;
             double error;
             bool firstTry = true;
-            txtError.Text.Replace(".", ",");
+            txtError.Text = txtError.Text.Replace(".", ",");
             normalizeMatrixValues();
 
             if (!validError())
@@ -83,8 +83,6 @@ namespace TpSuperior
             if (matrixFullAndDiagonal() && validInitialVector())
             {
                 initializeProcedureMatrix();
-
-
                 r = getInitialVector();
                 lr = Matrix<double>.Build.Dense(dgvMatrix.RowCount, 1);
                 error = Convert.ToDouble(txtError.Text);
@@ -96,22 +94,29 @@ namespace TpSuperior
                 }
 
                 m = buildMatrix();
-                while (selectedNorm(r - lr) > error || firstTry)
+                if (method == "Jacobi")
+                {
+                    T = jacobiTMatrix(m);
+                    C = jacobiCMatrix(m);
+                }
+                else
+                {
+                    T = GSTMatrix(m);
+                    C = GSCMatrix(m);
+                }
+                double tNorm = selectedNorm(T);
+                if (tNorm >= 1)
+                {
+                    MessageBox.Show("La norma de la matriz T es: " + selectedNorm(T) + ", no se puede asegurar la convergencia del metodo.");
+                    return;
+                }
+                MessageBox.Show("La norma de la matriz T es: " + selectedNorm(T));
+                while ((r - lr).L2Norm() > error || firstTry)
                 {
                    firstTry = false;
-                   if (method == "Jacobi")
-                    {
-                        T = jacobiTMatrix(m);
-                        C = jacobiCMatrix(m);
-                    }
-                    else
-                    {
-                        T = GSTMatrix(m);
-                        C = GSCMatrix(m);
-                    }
                     lr = r;
                     r = T * r + C;
-                    printStep(r, selectedNorm(r - lr));
+                    printStep(r, (r - lr).L2Norm());
                 }
                 mostrarResultado(r);
             }
@@ -240,9 +245,16 @@ namespace TpSuperior
         private void normalizeMatrixValues()
         {
             for (int i = 0; i < dgvMatrix.RowCount; ++i)
+            {
+                normalizeCellStringNumber(dgvInitialVector.Rows[i].Cells[0]);
                 for (int j = 0; j < dgvMatrix.ColumnCount; ++j)
                     if (dgvMatrix.Rows[i].Cells[j].Value != null)
-                        dgvMatrix.Rows[i].Cells[j].Value = dgvMatrix.Rows[i].Cells[j].Value.ToString().Replace(".", ",");
+                        normalizeCellStringNumber(dgvMatrix.Rows[i].Cells[j]);
+            }
+        }
+        private void normalizeCellStringNumber(DataGridViewCell cell)
+        {
+            cell.Value = cell.Value.ToString().Replace(".", ",");
         }
         private Matrix<double> invertedMatrix(Matrix<double> m)
         {
@@ -398,7 +410,8 @@ namespace TpSuperior
             for (int i = 0; i < dgvMatrix.ColumnCount - 1; ++i)
                 dgvProcedure.Columns.Add(dgvMatrix.Columns[i].HeaderText, dgvMatrix.Columns[i].HeaderText);
 
-            dgvProcedure.Columns.Add("CE", "Cota de error");
+            dgvProcedure.Columns.Add("CP", "Criterio de paro");
+            dgvProcedure.Columns[dgvProcedure.ColumnCount - 1].Width += 30;
         }
         private void printStep(Matrix<double> r, double error)
         {
